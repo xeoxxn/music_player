@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youtube Streaming</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="music-box">
+        <div class="album-img">
+          <img src="album.jpg" class="album-img" width="380" height="380" />
+        </div>
+        <div class="naming">
+          <div class="iphone">iphone</div>
+          <div class="title">
+            <strong>
+              <a
+                href="https://music.youtube.com/watch?v=pERDk4KoW-s"
+                style="text-decoration: none; color: white"
+                >Antifreeze</a
+              >
+            </strong>
+          </div>
+          <div class="singer">
+            <a
+              href="https://music.youtube.com/channel/UCa5b_7ImijW-GNEt4hNUzWg"
+              style="text-decoration: none; color: gray"
+              >Yerin Baek</a
+            >
+          </div>
+          <div class="play_time">
+            <span>2:13</span>
+            <div class="play_time_bar_main">
+              <div class="play_time_bar_stamp"></div>
+            </div>
+            <span>-1:53</span>
+          </div>
+          <div class="music_controller">
+            <i class="fa-solid fa-backward"></i>
+            <i class="fa-solid fa-pause"></i>
+            <i class="fa-solid fa-forward"></i>
+          </div>
+          <div class="volume_set">
+            <i class="fa-sharp fa-solid fa-volume-off"></i>
+            <div class="volume_bar_main">
+              <div class="volume_bar_stamp"></div>
+            </div>
+            <i class="fa-sharp fa-solid fa-volume-high"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script
+  src="https://kit.fontawesome.com/0aab40cbe6.js"
+  crossorigin="anonymous"
+></script>
+<style>
+  .container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .music-box {
+    background-color: rgb(41, 41, 41);
+    border-radius: 65px;
+    border: solid;
+    width: 450px;
+    height: 700px;
+    text-align: center;
+    color: rgb(41, 41, 41);
+    padding: 10px 0 0 0;
+    box-shadow: 0px 0px 10px;
+    /* padding - 안쪽 여백, margin - 바깥 쪽 여백
+    margin, padding - ** 위 오 아래 왼 ** */
+  }
+  .album-img {
+    display: block;
+    margin: auto;
+    border-radius: 10px;
+    margin-top: 18px;
+  }
+  .album-img:active {
+    transform: scale(1.03);
+    transition: 0.5s;
+  }
+  .naming {
+    text-align: left;
+    margin-left: 25px;
+  }
+  .iphone {
+    color: gray;
+    font-weight: 500;
+    font-size: small;
+    margin-top: 10px;
+    cursor: default;
+  }
+  .title {
+    color: white;
+  }
+  .singer {
+    color: gray;
+    font-size: 90%;
+  }
+  .play_time {
+    color: gray;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-right: 30px;
+  }
+  .play_time_bar_main {
+    margin-top: 8px;
+    width: 70%;
+    height: 8px;
+    border-radius: 40px;
+    background-color: gray;
+  }
+  .play_time_bar_stamp {
+    height: inherit;
+    width: 53%;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    background-color: rgb(210, 210, 210);
+  }
+  .music_controller {
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+    color: white;
+  }
+  .music_controller .fa-backward,
+  .music_controller .fa-forward {
+    font-size: 25px;
+    margin-top: 37px;
+  }
+  .music_controller .fa-pause {
+    font-size: 40px;
+    margin-top: 30px;
+  }
+  .volume_set {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 20px;
+    margin-top: 50px;
+  }
+  .volume_bar_main {
+    margin-top: 8px;
+    width: 80%;
+    height: 8px;
+    border-radius: 40px;
+    background-color: gray;
+  }
+  .volume_bar_stamp {
+    height: inherit;
+    width: 50%;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    background-color: rgb(210, 210, 210);
+  }
+  .volume_set .fa-volume-off,
+  .volume_set .fa-volume-high {
+    color: gray;
+    margin-top: 4px;
+  }
+</style>
