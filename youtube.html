@@ -5,10 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Youtube Streaming</title>
+    <link rel="favicon" href="/favicon.ico" />
   </head>
   <body>
     <div class="container">
       <div class="music-box">
+        <div class="switch-box">
+          <input type="button" value="night" id="btn_1" onclick="toggle()" />
+        </div>
         <div class="album-img">
           <img src="album.jpg" class="album-img" width="380" height="380" />
         </div>
@@ -17,6 +21,7 @@
           <div class="title">
             <strong>
               <a
+                class="title_link"
                 href="https://music.youtube.com/watch?v=pERDk4KoW-s"
                 style="text-decoration: none; color: white"
                 >Antifreeze</a
@@ -39,7 +44,12 @@
           </div>
           <div class="music_controller">
             <i class="fa-solid fa-backward"></i>
-            <i class="fa-solid fa-pause"></i>
+            <button
+              type="button"
+              id="btn"
+              class="fa-solid fa-play"
+              onclick="changeBtnName()"
+            ></button>
             <i class="fa-solid fa-forward"></i>
           </div>
           <div class="volume_set">
@@ -58,6 +68,60 @@
   src="https://kit.fontawesome.com/0aab40cbe6.js"
   crossorigin="anonymous"
 ></script>
+<script>
+  function toggle() {
+    const btnElement = document.getElementById("btn_1");
+    if (document.querySelector("body").style.backgroundColor != "black") {
+      night();
+    } else {
+      day();
+    }
+  }
+  let audio = new Audio("Antifreeze.mp3");
+  function changeBtnName() {
+    const btnElement = document.getElementById("btn");
+    if (btnElement.className == "fa-solid fa-play") {
+      btnElement.className = "fa-solid fa-pause";
+      playAudio();
+    } else {
+      btnElement.className = "fa-solid fa-play";
+      stopAudio();
+    }
+  }
+  function night() {
+    document.querySelector("body").style.backgroundColor = "black";
+    document.querySelector(".music-box").style.backgroundColor = "white";
+    document.querySelector(".music-box").style.color = "white";
+    document.querySelector(".title_link").style.color = "black";
+    document.querySelector(".music_controller").style.color = "black";
+    document.querySelector("#btn").style.color = "black";
+    btnElement.value = "day";
+  }
+  function day() {
+    document.querySelector("body").style.backgroundColor = "white";
+    document.querySelector(".music-box").style.backgroundColor =
+      "rgb(41, 41, 41)";
+    document.querySelector(".music-box").style.color = "rgb(41, 41, 41)";
+    document.querySelector(".music_controller").style.color = "white";
+    document.querySelector(".title_link").style.color = "white";
+    document.querySelector("#btn").style.color = "white";
+    btnElement.value = "night";
+  }
+
+  function playAudio() {
+    audio.volume = 0.2;
+    audio.loop = false;
+    audio.play();
+  }
+
+  function stopAudio() {
+    audio.pause();
+  }
+</script>
+<script
+  src="https://kit.fontawesome.com/0aab40cbe6.js"
+  crossorigin="anonymous"
+></script>
 <style>
   .container {
     height: 100vh;
@@ -65,7 +129,6 @@
     align-items: center;
     justify-content: center;
   }
-
   .music-box {
     background-color: rgb(41, 41, 41);
     border-radius: 65px;
@@ -78,6 +141,15 @@
     box-shadow: 0px 0px 10px;
     /* padding - 안쪽 여백, margin - 바깥 쪽 여백
     margin, padding - ** 위 오 아래 왼 ** */
+  }
+  .switch-box {
+    display: flex;
+    justify-content: center;
+  }
+  #btn_1 {
+    background-color: gray;
+    color: black;
+    border-radius: 10px;
   }
   .album-img {
     display: block;
@@ -139,7 +211,8 @@
     font-size: 25px;
     margin-top: 37px;
   }
-  .music_controller .fa-pause {
+  .music_controller .fa-pause,
+  .music_controller .fa-play {
     font-size: 40px;
     margin-top: 30px;
   }
@@ -167,5 +240,12 @@
   .volume_set .fa-volume-high {
     color: gray;
     margin-top: 4px;
+  }
+
+  #btn {
+    background-color: rgba(0, 0, 0, 0);
+    border: rgba(0, 0, 0, 0);
+    font-size: 40px;
+    color: white;
   }
 </style>
