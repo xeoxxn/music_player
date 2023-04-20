@@ -35,22 +35,22 @@
               >Yerin Baek</a
             >
           </div>
-          <div class="play_time">
-            <span>2:13</span>
-            <div class="play_time_bar_main">
-              <div class="play_time_bar_stamp"></div>
+          <div class="audio-container" id="audio-container">
+            <div class="progress-container" id="progress-container">
+              <div class="progress" id="progress"></div>
             </div>
-            <span>-1:53</span>
           </div>
-          <div class="music_controller">
-            <i class="fa-solid fa-backward"></i>
-            <button
-              type="button"
-              id="btn"
-              class="fa-solid fa-play"
-              onclick="changeBtnName()"
-            ></button>
-            <i class="fa-solid fa-forward"></i>
+          <audio src="Antifreeze.mp3" id="audio"></audio>
+          <div class="navigation">
+            <button id="prev" class="action-btn">
+              <i class="fa-solid fa-backward"></i>
+            </button>
+            <button id="play" class="action-btn action-btn-big">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button id="next" class="action-btn">
+              <i class="fa-solid fa-forward"></i>
+            </button>
           </div>
           <div class="volume_set">
             <i class="fa-sharp fa-solid fa-volume-off"></i>
@@ -69,6 +69,54 @@
   crossorigin="anonymous"
 ></script>
 <script>
+  const musicContainer = document.getElementById("audio-container");
+  const playBtn = document.getElementById("play");
+  const prevBtn = document.getElementById("prev");
+  const nextBtn = document.getElementById("next");
+
+  const audio = document.getElementById("audio");
+  const progress = document.getElementById("progress");
+  const progressContainer = document.getElementById("progress-container");
+
+  function playSong() {
+    musicContainer.classList.add("play");
+    playBtn.querySelector("i.fa-solid").classList.remove("fa-play");
+    playBtn.querySelector("i.fa-solid").classList.add("fa-pause");
+
+    audio.play();
+  }
+  function pauseSong() {
+    musicContainer.classList.remove("play");
+    playBtn.querySelector("i.fa-solid").classList.add("fa-play");
+    playBtn.querySelector("i.fa-solid").classList.remove("fa-pause");
+
+    audio.pause();
+  }
+  function updateProgress(e) {
+    const { duration, currentTime } = e.srcElement;
+    const progressPercent = (currentTime / duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+  }
+  function setProgress(e) {
+    const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+
+    audio.currentTime = (clickX / width) * duration;
+  }
+  playBtn.addEventListener("click", () => {
+    const isPlaying = musicContainer.classList.contains("play");
+
+    if (isPlaying) {
+      pauseSong();
+    } else {
+      playSong();
+    }
+  });
+  audio.addEventListener("timeupdate", updateProgress);
+  progressContainer.addEventListener("timeupdate", updateProgress);
+  progressContainer.addEventListener("click", setProgress);
+
   function toggle() {
     const btnElement = document.getElementById("btn_1");
     if (document.querySelector("body").style.backgroundColor != "black") {
@@ -77,45 +125,30 @@
       day();
     }
   }
-  let audio = new Audio("Antifreeze.mp3");
-  function changeBtnName() {
-    const btnElement = document.getElementById("btn");
-    if (btnElement.className == "fa-solid fa-play") {
-      btnElement.className = "fa-solid fa-pause";
-      playAudio();
-    } else {
-      btnElement.className = "fa-solid fa-play";
-      stopAudio();
-    }
-  }
+
   function night() {
+    const btnElement = document.getElementById("btn_1");
     document.querySelector("body").style.backgroundColor = "black";
     document.querySelector(".music-box").style.backgroundColor = "white";
     document.querySelector(".music-box").style.color = "white";
     document.querySelector(".title_link").style.color = "black";
-    document.querySelector(".music_controller").style.color = "black";
-    document.querySelector("#btn").style.color = "black";
+    document.querySelector("#prev").style.color = "gray";
+    document.querySelector("#next").style.color = "gray";
+    document.querySelector(".action-btn-big").style.color = "gray";
     btnElement.value = "day";
   }
   function day() {
+    const btnElement = document.getElementById("btn_1");
     document.querySelector("body").style.backgroundColor = "white";
     document.querySelector(".music-box").style.backgroundColor =
       "rgb(41, 41, 41)";
     document.querySelector(".music-box").style.color = "rgb(41, 41, 41)";
-    document.querySelector(".music_controller").style.color = "white";
     document.querySelector(".title_link").style.color = "white";
-    document.querySelector("#btn").style.color = "white";
+    document.querySelector("#prev").style.color = "rgb(210, 210, 210)";
+    document.querySelector("#next").style.color = "rgb(210, 210, 210)";
+    document.querySelector(".action-btn-big").style.color =
+      "rgb(210, 210, 210)";
     btnElement.value = "night";
-  }
-
-  function playAudio() {
-    audio.volume = 0.2;
-    audio.loop = false;
-    audio.play();
-  }
-
-  function stopAudio() {
-    audio.pause();
   }
 </script>
 <script
@@ -179,48 +212,51 @@
     color: gray;
     font-size: 90%;
   }
-  .play_time {
-    color: gray;
-    display: flex;
-    justify-content: space-between;
+  .progress-container {
+    background: gray;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 15px 0 10px 0;
+    height: 8px;
+    width: 95%;
+  }
+
+  .progress {
+    background-color: rgb(210, 210, 210);
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 5px;
+    height: 100%;
+    width: 45%;
+    transition: width 0.1s linear;
+  }
+  .navigation {
     margin-top: 20px;
     margin-right: 30px;
-  }
-  .play_time_bar_main {
-    margin-top: 8px;
-    width: 70%;
-    height: 8px;
-    border-radius: 40px;
-    background-color: gray;
-  }
-  .play_time_bar_stamp {
-    height: inherit;
-    width: 53%;
-    border-top-left-radius: 40px;
-    border-bottom-left-radius: 40px;
-    background-color: rgb(210, 210, 210);
-  }
-  .music_controller {
-    width: 90%;
     display: flex;
-    justify-content: space-evenly;
-    color: white;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
   }
-  .music_controller .fa-backward,
-  .music_controller .fa-forward {
+
+  .action-btn {
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    color: rgb(210, 210, 210);
     font-size: 25px;
-    margin-top: 37px;
+    cursor: pointer;
+    padding: 10px;
+    margin: 0 20px;
   }
-  .music_controller .fa-pause,
-  .music_controller .fa-play {
+
+  .action-btn.action-btn-big {
+    color: rgb(210, 210, 210);
     font-size: 40px;
-    margin-top: 30px;
   }
   .volume_set {
     display: flex;
     justify-content: space-between;
     margin-right: 20px;
-    margin-top: 50px;
+    margin-top: 20px;
   }
   .volume_bar_main {
     margin-top: 8px;
@@ -240,12 +276,5 @@
   .volume_set .fa-volume-high {
     color: gray;
     margin-top: 4px;
-  }
-
-  #btn {
-    background-color: rgba(0, 0, 0, 0);
-    border: rgba(0, 0, 0, 0);
-    font-size: 40px;
-    color: white;
   }
 </style>
