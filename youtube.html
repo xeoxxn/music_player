@@ -52,10 +52,21 @@
               <i class="fa-solid fa-forward"></i>
             </button>
           </div>
-          <div class="volume_set">
+          <div class="volume">
             <i class="fa-sharp fa-solid fa-volume-off"></i>
-            <div class="volume_bar_main">
-              <div class="volume_bar_stamp"></div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              id="volume-range"
+              class="volume-range"
+            />
+
+            <div class="bar-hoverbox">
+              <div class="bar">
+                <div class="bar-fill"></div>
+              </div>
             </div>
             <i class="fa-sharp fa-solid fa-volume-high"></i>
           </div>
@@ -132,9 +143,9 @@
     document.querySelector(".music-box").style.backgroundColor = "white";
     document.querySelector(".music-box").style.color = "white";
     document.querySelector(".title_link").style.color = "black";
-    document.querySelector("#prev").style.color = "gray";
-    document.querySelector("#next").style.color = "gray";
-    document.querySelector(".action-btn-big").style.color = "gray";
+    document.querySelector("#prev").style.color = "black";
+    document.querySelector("#next").style.color = "black";
+    document.querySelector(".action-btn-big").style.color = "black";
     btnElement.value = "day";
   }
   function day() {
@@ -150,6 +161,62 @@
       "rgb(210, 210, 210)";
     btnElement.value = "night";
   }
+  const audio1 = document.getElementById("audio");
+  const audioVolume = document.getElementById("volume-range");
+  audioVolume.addEventListener("change", function (e) {
+    audio1.volume = this.value / 100;
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    const range = document.querySelector("input[type=range]");
+
+    const barHoverBox = document.querySelector(".volume .bar-hoverbox");
+    const fill = document.querySelector(".volume .bar .bar-fill");
+    const setValue = (value) => {
+      fill.style.width = value + "%";
+      range.setAttribute("value", value);
+      range.dispatchEvent(new Event("change"));
+    };
+
+    setValue(range.value);
+
+    const calculateFill = (e) => {
+      let offsetX = e.offsetX;
+
+      if (e.type === "touchmove") {
+        offsetX = e.touches[0].pageX - e.touches[0].target.offsetLeft;
+      }
+
+      const width = e.target.offsetWidth - 30;
+
+      setValue(Math.max(Math.min(((offsetX - 15) / width) * 100.0, 100.0), 0));
+    };
+
+    let barStillDown = false;
+
+    barHoverBox.addEventListener(
+      "mousedown",
+      (e) => {
+        barStillDown = true;
+
+        calculateFill(e);
+      },
+      true
+    );
+
+    barHoverBox.addEventListener("mousemove", (e) => {
+      if (barStillDown) {
+        calculateFill(e);
+      }
+    });
+
+    document.addEventListener(
+      "mouseup",
+      (e) => {
+        barStillDown = false;
+      },
+      true
+    );
+  });
 </script>
 <script
   src="https://kit.fontawesome.com/0aab40cbe6.js"
@@ -252,28 +319,42 @@
     color: rgb(210, 210, 210);
     font-size: 40px;
   }
-  .volume_set {
+  .volume {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     margin-right: 20px;
-    margin-top: 20px;
+    margin-top: 40px;
   }
-  .volume_bar_main {
-    margin-top: 8px;
-    width: 80%;
-    height: 8px;
-    border-radius: 40px;
-    background-color: gray;
+  input[type="range"] {
+    display: none;
   }
-  .volume_bar_stamp {
-    height: inherit;
-    width: 50%;
-    border-top-left-radius: 40px;
-    border-bottom-left-radius: 40px;
-    background-color: rgb(210, 210, 210);
+  .bar-hoverbox {
+    padding: 10px 15px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
   }
-  .volume_set .fa-volume-off,
-  .volume_set .fa-volume-high {
+  a:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+  .bar {
+    background: gray;
+    height: 7px;
+    width: 320px;
+    border-radius: 15px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .bar-fill {
+    background: rgb(210, 210, 210);
+    width: 0%;
+    height: 100%;
+    background-clip: border-box;
+    pointer-events: none;
+  }
+  .fa-volume-off,
+  .fa-volume-high {
     color: gray;
     margin-top: 4px;
   }
